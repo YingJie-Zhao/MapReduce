@@ -1,9 +1,8 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -13,6 +12,7 @@ import java.util.List;
  */
 public class Sequential {
     public static void main(String[] args) throws IOException {
+        long begin = System.currentTimeMillis();
         File dir = new File("/Users/zhaoyingjie/IdeaProjects/MapReduce/src/txt");
         File[] files = dir.listFiles();
         if (null == files || files.length < 2) {
@@ -23,6 +23,7 @@ public class Sequential {
 
         //map files into intermediate variable
         for (File f : files) {
+            System.out.println("Mapping " + f.getName());
             try (FileInputStream fs = new FileInputStream(f)) {
                 byte[] data = new byte[(int) f.length()];
                 fs.read(data);
@@ -34,5 +35,35 @@ public class Sequential {
                 System.exit(1);
             }
         }
+
+        Collections.sort(intermediate);
+
+        String oName = "mr-out-0.txt";
+        String template = "%s %s\n";
+        File oFile = new File(oName);
+        FileWriter fw = new FileWriter(oFile, true);
+
+        System.out.println("Begin to reduce intermediate data...");
+        for (int i = 0; i < intermediate.size(); i++) {
+            int j = i + 1;
+            while (j < intermediate.size() && intermediate.get(j).key.equals(intermediate.get(i).key)) {
+                j++;
+            }
+            List<String> values = new LinkedList<>();
+            for (int k = 0; k < j; k++) {
+                values.add(intermediate.get(k).value);
+            }
+
+            String output = ReduceF.reduce(intermediate.get(i).key, values);
+            String content = template.formatted(intermediate.get(i).key, output);
+            fw.append(content);
+            System.out.println(content);
+
+            i = j;
+        }
+        fw.close();
+        long end = System.currentTimeMillis();
+        double cost = (double) (end - begin) / (60000);
+        System.out.println("Sequential MapReduce cost " + "%.2f".formatted(cost) + "min");
     }
 }
