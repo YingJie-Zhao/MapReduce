@@ -38,11 +38,10 @@ public class Worker {
     }
 
     private void doMap(Task task, BiFunction<String, String, List<KeyValue>> mapF) {
-        System.out.printf("Running map task %d\n", task.getTaskID());
         MapF.map(task, mapF);
     }
 
     private void doReduce(Task task, BiFunction<String, List<String>, String> reduceF) {
-        System.out.printf("Running reduce task %d\n", task.getTaskID());
+        ReduceF.reduce(task, reduceF);
     }
 }
