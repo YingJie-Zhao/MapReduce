@@ -1,14 +1,18 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
-
+/**
+ * Dispatch tasks to worker
+ *
+ * @author zhaoyingjie 2021/6/28
+ */
 public class MasterImpl extends UnicastRemoteObject implements Master {
 
-    private volatile Map<Integer, Task> mapTasksReady;
+    private final Map<Integer, Task> mapTasksReady;
     private final Map<Integer, Task> mapTasksInProgress;
 
     private final Map<Integer, Task> reduceTasksReady;
@@ -19,10 +23,10 @@ public class MasterImpl extends UnicastRemoteObject implements Master {
     private final int nMap;
 
     public MasterImpl(List<String> files, int nReduce) throws RemoteException {
-        mapTasksReady = new HashMap<>(16);
-        mapTasksInProgress = new HashMap<>(16);
-        reduceTasksReady = new HashMap<>(16);
-        reduceTasksInProgress = new HashMap<>(16);
+        mapTasksReady = new ConcurrentHashMap<>(16);
+        mapTasksInProgress = new ConcurrentHashMap<>(16);
+        reduceTasksReady = new ConcurrentHashMap<>(16);
+        reduceTasksInProgress = new ConcurrentHashMap<>(16);
 
         for (int i = 0; i < files.size(); i++) {
             mapTasksReady.put(i, new Task(files.get(i), Task.MAP, i, nReduce, files.size(), System.currentTimeMillis()));
@@ -34,7 +38,7 @@ public class MasterImpl extends UnicastRemoteObject implements Master {
     }
 
     private void collectStallTasks() {
-        //collect when task overrun 10s
+        //collect when task overrun 1s
         long curTime = System.currentTimeMillis();
         Set<Map.Entry<Integer, Task>> mEntrySet = mapTasksInProgress.entrySet();
         for (Map.Entry<Integer, Task> entry : mEntrySet) {

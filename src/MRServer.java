@@ -10,6 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Start a RMI server and listen request on localhost:8888
+ * Master thread will be initiated at the same time
+ *
+ * @author zhaoyingjie 2021/6/28
+ */
 public class MRServer {
     public static void main(String[] args) throws IOException, AlreadyBoundException, InterruptedException {
         LocateRegistry.createRegistry(1099);
@@ -36,7 +42,7 @@ public class MRServer {
                 System.out.println("RMI server stopped.");
                 System.exit(0);
             }
-            Thread.sleep(10000);
+            Thread.sleep(50000);
         }
     }
 

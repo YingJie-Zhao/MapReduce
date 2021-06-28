@@ -28,7 +28,7 @@ public class Sequential {
                 byte[] data = new byte[(int) f.length()];
                 fs.read(data);
                 String content = new String(data, StandardCharsets.UTF_8);
-                List<KeyValue> mapResult = MapF.map(f.getName(), content);
+                List<KeyValue> mapResult = MapF.sequentialMap(f.getName(), content);
                 intermediate.addAll(mapResult);
             } catch (FileNotFoundException e) {
                 System.out.println("File not found: " + f);
@@ -54,7 +54,7 @@ public class Sequential {
                 values.add(intermediate.get(k).value);
             }
 
-            String output = ReduceF.reduce(intermediate.get(i).key, values);
+            String output = ReduceF.sequentialReduce(intermediate.get(i).key, values);
             String content = template.formatted(intermediate.get(i).key, output);
             fw.append(content);
             System.out.println(content);

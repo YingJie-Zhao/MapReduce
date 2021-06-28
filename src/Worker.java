@@ -5,6 +5,12 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.function.BiFunction;
 
+/**
+ * Invoke {@link Master#getTask()} to get a task and execute
+ * Invoke {@link Master#taskDone(Task)} when task was done
+ *
+ * @author zhaoyingjie 2021/6/28
+ */
 public class Worker {
 
     public void work(BiFunction<String, String, List<KeyValue>> mapF, BiFunction<String, List<String>, String> reduceF) throws MalformedURLException, NotBoundException, RemoteException, InterruptedException {
@@ -31,13 +37,12 @@ public class Worker {
         }
     }
 
-    private void doMap(Task task, BiFunction<String, String, List<KeyValue>> mapF) throws InterruptedException {
+    private void doMap(Task task, BiFunction<String, String, List<KeyValue>> mapF) {
         System.out.printf("Running map task %d\n", task.getTaskID());
-        Thread.sleep((long) (Math.random() * 100000));
+        MapF.map(task, mapF);
     }
 
-    private void doReduce(Task task, BiFunction<String, List<String>, String> reduceF) throws InterruptedException {
+    private void doReduce(Task task, BiFunction<String, List<String>, String> reduceF) {
         System.out.printf("Running reduce task %d\n", task.getTaskID());
-        Thread.sleep((long) (Math.random() * 10000));
     }
 }
