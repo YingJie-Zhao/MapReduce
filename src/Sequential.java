@@ -13,7 +13,7 @@ import java.util.List;
 public class Sequential {
     public static void main(String[] args) throws IOException {
         long begin = System.currentTimeMillis();
-        File dir = new File("/Users/zhaoyingjie/IdeaProjects/MapReduce/src/txt");
+        File dir = new File("src/txt");
         File[] files = dir.listFiles();
         if (null == files || files.length < 2) {
             System.out.println("More than 2 input files required!");
