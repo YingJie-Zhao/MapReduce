@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 /**
  * Start worker thread to get task from master
  *
- * @author zhaoyingjie 2021/6/28
+ * @author YingJie Zhao 2021/6/28
  */
 public class MRClient {
     public static void main(String[] args) throws MalformedURLException, NotBoundException, RemoteException, InterruptedException {

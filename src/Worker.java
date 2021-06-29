@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
  * Invoke {@link Master#getTask()} to get a task and execute
  * Invoke {@link Master#taskDone(Task)} when task was done
  *
- * @author zhaoyingjie 2021/6/28
+ * @author YingJie Zhao 2021/6/28
  */
 public class Worker {
 

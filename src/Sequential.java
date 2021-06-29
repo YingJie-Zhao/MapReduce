@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * sequentially map files and reduce into file
  *
- * @author zhaoyingjie 2021/6/24
+ * @author YingJie Zhao 2021/6/24
  */
 public class Sequential {
     public static void main(String[] args) throws IOException {

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Start a RMI server and listen request on localhost:8888
  * Master thread will be initiated at the same time
  *
- * @author zhaoyingjie 2021/6/28
+ * @author YingJie Zhao 2021/6/28
  */
 public class MRServer {
     public static void main(String[] args) throws IOException, AlreadyBoundException, InterruptedException {

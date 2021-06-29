@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Dispatch tasks to worker
  *
- * @author zhaoyingjie 2021/6/28
+ * @author YingJie Zhao 2021/6/28
  */
 public class MasterImpl extends UnicastRemoteObject implements Master {
 

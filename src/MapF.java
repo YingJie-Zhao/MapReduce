@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Map files by key hash
  *
- * @author zhaoyingjie 2021/6/28
+ * @author YingJie Zhao 2021/6/28
  */
 public class MapF {
     public static List<KeyValue> sequentialMap(String filename, String content) {

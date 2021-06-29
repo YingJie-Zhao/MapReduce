@@ -9,6 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
 
+/**
+ * Reduce intermediate files into result files
+ *
+ * @author YingJie Zhao 2021/06/29
+ */
 public class ReduceF {
     public static String sequentialReduce(String key, List<String> values) {
         return String.valueOf(values.size());

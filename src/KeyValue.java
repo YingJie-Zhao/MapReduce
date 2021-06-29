@@ -1,3 +1,9 @@
+/**
+ * Key:word
+ * Value:count
+ *
+ * @author YingJie Zhao 2021/06/29
+ */
 public class KeyValue implements Comparable<KeyValue> {
     public String key;
     public String value;

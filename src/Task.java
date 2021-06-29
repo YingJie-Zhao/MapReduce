@@ -1,5 +1,10 @@
 import java.io.Serializable;
 
+/**
+ * Pass information between master and worker
+ *
+ * @author YingJie Zhao 2021/06/29
+ */
 public class Task implements Serializable {
 
     public static final int MAP = 0;
