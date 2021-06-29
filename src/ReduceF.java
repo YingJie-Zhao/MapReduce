@@ -40,14 +40,14 @@ public class ReduceF {
         File oFile = new File(oName);
 
         int i = 0;
-        while (i<intermediate.size()){
+        while (i < intermediate.size()) {
             int j = i + 1;
             while (j < intermediate.size() && intermediate.get(j).key.equals(intermediate.get(i).key)) {
                 j++;
             }
 
             List<String> values = new LinkedList<>();
-            for (int k = 0; k < j; k++) {
+            for (int k = i; k < j; k++) {
                 values.add(intermediate.get(k).value);
             }
             String output = reduceF.apply(intermediate.get(i).key, values);
