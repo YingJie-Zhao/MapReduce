@@ -90,6 +90,6 @@ public class MapF {
         hash += hash << 3;
         hash ^= hash >> 17;
         hash += hash << 5;
-        return Math.abs(hash);
+        return hash & 0x7fffffff;
     }
 }
