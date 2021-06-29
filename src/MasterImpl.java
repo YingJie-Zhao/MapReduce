@@ -1,9 +1,6 @@
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 /**
  * Dispatch tasks to worker
@@ -23,10 +20,10 @@ public class MasterImpl extends UnicastRemoteObject implements Master {
     private final int nMap;
 
     public MasterImpl(List<String> files, int nReduce) throws RemoteException {
-        mapTasksReady = new ConcurrentHashMap<>(16);
-        mapTasksInProgress = new ConcurrentHashMap<>(16);
-        reduceTasksReady = new ConcurrentHashMap<>(16);
-        reduceTasksInProgress = new ConcurrentHashMap<>(16);
+        mapTasksReady = new HashMap<>(16);
+        mapTasksInProgress = new HashMap<>(16);
+        reduceTasksReady = new HashMap<>(16);
+        reduceTasksInProgress = new HashMap<>(16);
 
         for (int i = 0; i < files.size(); i++) {
             mapTasksReady.put(i, new Task(files.get(i), Task.MAP, i, nReduce, files.size(), System.currentTimeMillis()));
@@ -41,18 +38,22 @@ public class MasterImpl extends UnicastRemoteObject implements Master {
         //collect when task overrun 1s
         long curTime = System.currentTimeMillis();
         Set<Map.Entry<Integer, Task>> mEntrySet = mapTasksInProgress.entrySet();
-        for (Map.Entry<Integer, Task> entry : mEntrySet) {
-            if (curTime - entry.getValue().getTimeStamp() > 1000) {
+        Iterator<Map.Entry<Integer, Task>> mIterator = mEntrySet.iterator();
+        while (mIterator.hasNext()) {
+            Map.Entry<Integer, Task> entry = mIterator.next();
+            if (curTime - entry.getValue().getTimeStamp() > 10000) {
                 mapTasksReady.put(entry.getKey(), entry.getValue());
-                mapTasksInProgress.remove(entry.getKey());
+                mIterator.remove();
                 System.out.printf("Collect map task %d\n", entry.getKey());
             }
         }
         Set<Map.Entry<Integer, Task>> nEntrySet = reduceTasksInProgress.entrySet();
-        for (Map.Entry<Integer, Task> entry : nEntrySet) {
-            if (curTime - entry.getValue().getTimeStamp() > 1000) {
+        Iterator<Map.Entry<Integer, Task>> nIterator = nEntrySet.iterator();
+        while (nIterator.hasNext()) {
+            Map.Entry<Integer, Task> entry = nIterator.next();
+            if (curTime - entry.getValue().getTimeStamp() > 10000) {
                 reduceTasksReady.put(entry.getKey(), entry.getValue());
-                reduceTasksInProgress.remove(entry.getKey());
+                nIterator.remove();
                 System.out.printf("Collect reduce task %d\n", entry.getKey());
             }
         }
