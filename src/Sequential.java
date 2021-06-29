@@ -44,13 +44,14 @@ public class Sequential {
         FileWriter fw = new FileWriter(oFile, true);
 
         System.out.println("Begin to reduce intermediate data...");
-        for (int i = 0; i < intermediate.size(); i++) {
+        int i = 0;
+        while (i < intermediate.size()) {
             int j = i + 1;
             while (j < intermediate.size() && intermediate.get(j).key.equals(intermediate.get(i).key)) {
                 j++;
             }
             List<String> values = new LinkedList<>();
-            for (int k = 0; k < j; k++) {
+            for (int k = i; k < j; k++) {
                 values.add(intermediate.get(k).value);
             }
 
@@ -63,7 +64,7 @@ public class Sequential {
         }
         fw.close();
         long end = System.currentTimeMillis();
-        double cost = (double) (end - begin) / (60000);
-        System.out.println("Sequential MapReduce cost " + "%.2f".formatted(cost) + "min");
+        double cost = (double) (end - begin) / (1000);
+        System.out.println("Sequential MapReduce cost " + "%.2f".formatted(cost) + "seconds");
     }
 }
