@@ -37,12 +37,15 @@ public class MRServer {
         Master master = new MasterImpl(readFiles(), 10);
         Naming.bind("rmi://localhost:1099/master", master);
         System.out.println("RMI server started.");
+        long begin = System.currentTimeMillis();
         while (true) {
             if (master.done()) {
-                System.out.println("RMI server stopped.");
+                long end = System.currentTimeMillis();
+                double cost = (double) (end - begin) / 60000;
+                System.out.println("RMI server stopped.Total cost time(in minutes): " + "%.2f".formatted(cost));
                 System.exit(0);
             }
-            Thread.sleep(50000);
+            Thread.sleep(2000);
         }
     }
 
